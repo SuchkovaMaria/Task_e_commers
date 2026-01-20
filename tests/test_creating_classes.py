@@ -1,3 +1,5 @@
+import pytest
+
 from src.creating_classes import Category, Product
 
 
@@ -70,6 +72,10 @@ def test_product_str(product_1):
 def test_product_add(product_1, product_2):
     assert product_1 + product_2 == 1764.5
 
+
+def test_product_add_error(product_1, category_3):
+    with pytest.raises(TypeError):
+        product_1 + category_3
 
 def test_category_str(category_3):
     assert str(category_3) == "Ягоды, количество продуктов: 18 шт."

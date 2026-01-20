@@ -19,7 +19,10 @@ class Product:
         return f"{self.name}, {self.price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        return self.__price * self.quantity + other.__price * other.quantity
+        if isinstance(other, Product):
+            return self.__price * self.quantity + other.__price * other.quantity
+        else:
+            raise TypeError("Сложение не корректных типов данных")
 
     @property
     def price(self):
