@@ -4,6 +4,8 @@ from src.creating_classes import Category, Product
 
 
 def test_init_product_1(product_1):
+    """Создание экземпляра класса Продукт"""
+
     assert product_1.name == "Рис"
     assert product_1.description == "Крупа"
     assert product_1.price == 75.5
@@ -11,6 +13,8 @@ def test_init_product_1(product_1):
 
 
 def test_init_product_2(product_2):
+    """Создание второго экземпляра класса Продукт"""
+
     assert product_2.name == "Клубника"
     assert product_2.description == "Ягода"
     assert product_2.price == 201.9
@@ -18,6 +22,8 @@ def test_init_product_2(product_2):
 
 
 def test_init_category_1(category_1):
+    """Создание экземпляра класса Категория"""
+
     assert category_1.name == "Сладости"
     assert category_1.description == "Для детей"
     assert category_1.products_in_list == ["Яблочное пюре", "Запеканка", "Сок", "Мороженное"]
@@ -26,6 +32,8 @@ def test_init_category_1(category_1):
 
 
 def test_init_category_2(category_1, category_2):
+    """Создание второго экземпляра класса Категория"""
+
     assert category_2.name == "Овощи"
     assert category_2.description == "ЗОЖ"
     assert category_2.products_in_list == ["Помидор", "Кабачок", "Тыква"]
@@ -34,17 +42,23 @@ def test_init_category_2(category_1, category_2):
 
 
 def test_setter_product_1(product_1):
+    """Проверка setter у класса Продукт (без ошибки)"""
+
     product_1.price = 15
     assert product_1.price == 15
 
 
 def test_setter_product_2(capsys, product_1):
+    """Проверка ошибки setter у класса Продукт"""
+
     product_1.price = -3
     captured = capsys.readouterr()
     assert captured.out == "Цена не должна быть нулевая или отрицательная\n"
 
 
 def test_new_product(product_dict_1):
+    """Создание нового экземпляра класса Продукт"""
+
     assert Product.new_product(product_dict_1).name == "Ежевика"
     assert Product.new_product(product_dict_1).description == "Ягода"
     assert Product.new_product(product_dict_1).price == 211.4
@@ -52,10 +66,14 @@ def test_new_product(product_dict_1):
 
 
 def test_property_category(category_3):
+    """Проверка геттера класса Категория"""
+
     assert category_3.products == "Малина, 159.1 руб. Остаток: 15 шт.\nГолубика, 267.7 руб. Остаток: 3 шт.\n"
 
 
-def test_add_product_category(category_3, product_2):
+def test_add_product_category(category_3, product_2, lawngrass_1):
+    """Проверка добавления продукта в категорию"""
+
     category_3.add_product(product_2)
     assert category_3.products == (
         "Малина, 159.1 руб. Остаток: 15 шт.\n"
@@ -64,19 +82,42 @@ def test_add_product_category(category_3, product_2):
     )
     assert category_3.product_count == 3
 
+    category_3.add_product(lawngrass_1)
+    assert category_3.products == (
+        "Малина, 159.1 руб. Остаток: 15 шт.\n"
+        "Голубика, 267.7 руб. Остаток: 3 шт.\n"
+        "Клубника, 201.9 руб. Остаток: 5 шт.\n"
+        "grass, 3015 руб. Остаток: 2 шт.\n"
+    )
+
+
+def test_add_product_category_error(category_3):
+    """Проверка ошибки при добавлении продукта в категорию"""
+
+    with pytest.raises(TypeError):
+        category_3.add_product(1)
+
 
 def test_product_str(product_1):
+    """Проверка метода __str__ для класса Продукт"""
+
     assert str(product_1) == "Рис, 75.5 руб. Остаток: 10 шт."
 
 
 def test_product_add(product_1, product_2):
+    """Проверка метода __add__ для класса Продукт"""
+
     assert product_1 + product_2 == 1764.5
 
 
 def test_product_add_error(product_1, category_3):
+    """Проверка ошибки метода __add__ для класса Продукт"""
+
     with pytest.raises(TypeError):
-        i = product_1 + category_3
+        product_1 + category_3
 
 
 def test_category_str(category_3):
+    """Проверка метода __str__ для класса Категория"""
+
     assert str(category_3) == "Ягоды, количество продуктов: 18 шт."

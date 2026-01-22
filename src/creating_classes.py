@@ -22,7 +22,9 @@ class Product:
 
     def __add__(self, other):
         """Метод сложения цен двух продуктов (каждая цена умножена на количество шт. на складе)"""
-        if isinstance(other, Product):
+        if (
+            type(other) is self.__class__
+        ):  # сложение только экземпляров одного класса (поэтому сравнение с классом первого экземпляра)
             return self.__price * self.quantity + other.__price * other.quantity
         else:
             raise TypeError("Сложение не корректных типов данных")
@@ -85,8 +87,11 @@ class Category:
         """Вывод списка продуктов в категории (list)"""
         return self.__products
 
-    def add_product(self, product: Product):
+    def add_product(self, product):
         """Класс-метод для добавления товара в список продуктов"""
 
-        self.__products.append(product)
-        Category.product_count += 1
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.product_count += 1
+        else:
+            raise TypeError("Введенные данные являются продутком")

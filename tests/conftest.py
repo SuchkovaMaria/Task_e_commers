@@ -1,6 +1,7 @@
 import pytest
 
 from src.creating_classes import Category, Product
+from src.subsidiary_classes_prod import LawnGrass, Smartphone
 
 
 @pytest.fixture
@@ -33,3 +34,13 @@ def category_3():
 @pytest.fixture
 def product_dict_1():
     return {"name": "Ежевика", "description": "Ягода", "price": 211.4, "quantity": 7}
+
+
+@pytest.fixture
+def smartphone_1():
+    return Smartphone("Sumnum", "Смартфон", 15000, 5, 70, "A15", "2Gb", "black")
+
+
+@pytest.fixture
+def lawngrass_1():
+    return LawnGrass("grass", "пушистая", 3015, 2, "Россия", "15 суток", "изумруд")
