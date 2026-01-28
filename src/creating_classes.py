@@ -17,7 +17,10 @@ class Product(BaseProduct, MixinPrint):
         self.name = name
         self.description = description
         self.__price = price
-        self.quantity = quantity
+        if quantity > 0:
+            self.quantity = quantity
+        elif quantity <= 0:
+            raise ValueError("Товар с нулевым или отрицательным количеством не может быть добавлен")
         super().__init__()
 
     def __str__(self):
@@ -94,8 +97,30 @@ class Category:
     def add_product(self, product):
         """Класс-метод для добавления товара в список продуктов"""
 
-        if isinstance(product, Product):
-            self.__products.append(product)
-            Category.product_count += 1
-        else:
-            raise TypeError("Введенные данные являются продутком")
+        try:
+            if isinstance(product, Product):
+                self.__products.append(product)
+                print("Товар успешно добавлен")
+                Category.product_count += 1
+            else:
+                raise TypeError("Введенные данные не являются продутком")
+        except TypeError as e:
+            print(e)
+        finally:
+            print("Обработка товара завершена")
+
+    def middle_price(self):
+        """Метод подсчета среднего ценника продуктов в экземпляре класса Категория"""
+        try:
+            return round(sum([product.price for product in self.__products]) / len(self.__products), 1)
+        except ZeroDivisionError:
+            return 0
+
+
+if __name__ == "__main__":
+    cat = Category(
+        "Ягоды", "Летний сезон", [Product("Малина", "Ягода", 159.1, 15), Product("Голубика", "Ягода", 267.7, 3)]
+    )
+    pr1 = Product("Клубника", "Ягода", 201.9, 1)
+    cat.add_product(pr1)
+    print(cat.products)

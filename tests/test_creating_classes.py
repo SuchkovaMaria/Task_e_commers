@@ -91,11 +91,13 @@ def test_add_product_category(category_3, product_2, lawngrass_1):
     )
 
 
-def test_add_product_category_error(category_3):
+def test_add_product_category_error(capsys, category_3):
     """Проверка ошибки при добавлении продукта в категорию"""
 
-    with pytest.raises(TypeError):
-        category_3.add_product(1)
+    category_3.add_product(1)
+    captured = capsys.readouterr()
+    assert captured.out.split("\n")[-3] == "Введенные данные не являются продутком"
+    assert captured.out.split("\n")[-2] == "Обработка товара завершена"
 
 
 def test_product_str(product_1):
@@ -121,3 +123,24 @@ def test_category_str(category_3):
     """Проверка метода __str__ для класса Категория"""
 
     assert str(category_3) == "Ягоды, количество продуктов: 18 шт."
+
+
+def test_init_product_error_1():
+    """Проверка вывоза ошибки при создании экземпляра класса Продукт с нулевым количеством"""
+
+    with pytest.raises(ValueError):
+        Product("Рис", "Крупа", 75.5, 0)
+
+
+def test_init_product_error_2():
+    """Проверка вывоза ошибки при создании экземпляра класса Продукт с отрицательным количеством"""
+
+    with pytest.raises(ValueError):
+        Product("Рис", "Крупа", 75.5, -3)
+
+
+def test_middle_price(category_3, category_4):
+    """Проверка метода подсчета среднего ценника продуктов в экземпляре класса Категория"""
+
+    assert category_3.middle_price() == 213.4
+    assert category_4.middle_price() == 0
