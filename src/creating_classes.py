@@ -6,14 +6,38 @@ class Product:
 
     name: str
     description: str
-    price: float
+    __price: float
     quantity: int
 
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
-        self.price = price
+        self.__price = price
         self.quantity = quantity
+
+    @property
+    def price(self):
+        return self.__price
+
+    @price.setter
+    def price(self, price):
+        if price <= 0:
+            print("Цена не должна быть нулевая или отрицательная")
+        else:
+            self.__price = price
+
+    @classmethod
+    def new_product(cls, propuct):
+        for k, v in propuct.items():
+            if k == "name":
+                name = v
+            elif k == "description":
+                description = v
+            elif k == "price":
+                price = v
+            elif k == "quantity":
+                quantity = v
+        return cls(name, description, price, quantity)
 
 
 class Category:
@@ -21,7 +45,7 @@ class Category:
 
     name: str
     description: str
-    products: List[Product]
+    __products: List[Product]
 
     category_count = 0
     product_count = 0
@@ -29,7 +53,24 @@ class Category:
     def __init__(self, name, description, products):
         self.name = name
         self.description = description
-        self.products = products
+        self.__products = products if products else []
 
         Category.category_count += 1
-        Category.product_count = len(self.products)
+        Category.product_count = len(self.__products)
+
+    @property
+    def products(self):
+        products_str = ""
+        for product in self.__products:
+            products_str += f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+        return products_str
+
+    @property
+    def products_in_list(self):
+        return self.__products
+
+    def add_product(self, product: Product):
+        """Класс-метод для добавления товара в список продуктов"""
+
+        self.__products.append(product)
+        Category.product_count += 1
