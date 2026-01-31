@@ -32,6 +32,11 @@ def category_3():
 
 
 @pytest.fixture
+def category_4():
+    return Category("Ягоды", "Летний сезон", [])
+
+
+@pytest.fixture
 def product_dict_1():
     return {"name": "Ежевика", "description": "Ягода", "price": 211.4, "quantity": 7}
 
@@ -44,3 +49,13 @@ def smartphone_1():
 @pytest.fixture
 def lawngrass_1():
     return LawnGrass("grass", "пушистая", 3015, 2, "Россия", "15 суток", "изумруд")
+
+
+@pytest.fixture
+def product_error_1():
+    return Product("Рис", "Крупа", 75.5, 0)
+
+
+@pytest.fixture
+def product_error_2():
+    return Product("Рис", "Крупа", 75.5, -3)
