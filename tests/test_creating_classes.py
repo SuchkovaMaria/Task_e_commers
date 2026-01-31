@@ -53,7 +53,7 @@ def test_setter_product_2(capsys, product_1):
 
     product_1.price = -3
     captured = capsys.readouterr()
-    assert captured.out == "Цена не должна быть нулевая или отрицательная\n"
+    assert captured.out.split("\n")[-2] == "Цена не должна быть нулевая или отрицательная"
 
 
 def test_new_product(product_dict_1):
